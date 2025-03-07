@@ -14,13 +14,12 @@ const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
         }
     
         // اگر داخل onSubmit‌ فرم بودیم میشد از event استفاده کرد
-        const LoginFormHandler = () => {
+        const LoginHandler = () => {
             console.log(username, password);
             ResetForm();
             setShowLoginModal(false);
         }
 
-    const LoginHandler = () => {}
     return (
         <div className="fixed inset-0 z-10 overflow-y-auto">
             <div
@@ -62,7 +61,7 @@ const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
                                         <div className="items-center gap-2 mt-3 sm:flex">
                                             <button
                                                 className="w-full mt-2 p-2.5 flex-1 text-white bg-green-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
-                                                onClick={LoginFormHandler}
+                                                onClick={LoginHandler}
                                             >
                                                 Login
                                             </button>
