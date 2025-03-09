@@ -1,4 +1,6 @@
 import { Dispatch, FC, SetStateAction, useState } from "react";
+import { useApiPost } from "../functions/FetchAPI";
+import { TApiResponse } from "../types/public.types";
 
 interface IProps {
     setShowLoginModal: Dispatch<SetStateAction<Boolean>>
@@ -7,6 +9,7 @@ interface IProps {
 const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
         const [ username, setuserName ] = useState<string>("");
         const [ password, setPasword ] = useState<string>("");
+        const { data, status, statusText, postAPIData, error } = useApiPost();
     
         const ResetForm = (): void => {
             setuserName("");
@@ -14,10 +17,21 @@ const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
         }
     
         // اگر داخل onSubmit‌ فرم بودیم میشد از event استفاده کرد
-        const LoginHandler = () => {
+        const LoginHandler = async() => {
             console.log(username, password);
-            ResetForm();
-            setShowLoginModal(false);
+            postAPIData("/auth/login", { username, password });
+            console.log("status: ", status)
+            console.log("Text status: ", statusText )
+            console.log("Error: ", error)
+            console.log("Data", data);
+
+            if (status && status !== 200) {
+                alert(data.message)
+            } else {
+                ResetForm();
+            }
+
+            
         }
 
     return (
