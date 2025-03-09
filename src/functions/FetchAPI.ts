@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { TApiResponse } from "../types/public.types";
+import { TPostApiResponse } from "../types/public.types";
 
 const BackEndURL = "http://localhost:3700"
 
-export const useApiPost = (): TApiResponse => {
+export const useApiPost = (): TPostApiResponse => {
     const [status, setStatus] = useState<number>(0);
     const [statusText, setStatusText] = useState<string>("");
     const [data, setData] = useState<any>();

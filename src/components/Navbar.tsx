@@ -33,20 +33,20 @@ export default function Navbar() {
                             </li> 
             </ul>
 
-            <div className="mt-3 space-y-2 md:inline-block">
+            <div className="mt-3 space-y-2 md:space-x-2 md:flex md:items-center">
                                 <a
                                     href="#"
                                     onClick={() => setShowLoginModal(true)}
                                     className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
                                 >
-                                    Sign in
+                                    Signin
                                 </a>
                                 <a
                                     href="#"
                                     onClick={() => setShowRegisterModal(true)}
                                     className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
                                 >
-                                    Sign up
+                                    Signup
                                 </a>
             </div>
         </div>
