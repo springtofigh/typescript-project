@@ -8,7 +8,12 @@ import { COOKIES_NAME } from '../enums/public.enums';
 export default function Navbar() {
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const [cookies] = useCookies([COOKIES_NAME.ACCESS_TOKEN, COOKIES_NAME.USER ]);
+    const [cookies,  ,removeCookie] = useCookies([COOKIES_NAME.ACCESS_TOKEN, COOKIES_NAME.USER ]);
+
+    const LogoutHandler = () => {
+        removeCookie(COOKIES_NAME.ACCESS_TOKEN);
+        removeCookie(COOKIES_NAME.USER);
+    };
     
 
     const NAV: JSX.Element = (
@@ -37,7 +42,17 @@ export default function Navbar() {
                             </li> 
             </ul>
 
-            {(cookies.accessToken && cookies.user) ? null : (
+            {(cookies.accessToken && cookies.user) ? (
+                //حتما کلاس ها باید یکی باشن تا نمایش داده بشه
+                <div className="mt-3 space-y-2 md:space-x-2 md:flex md:items-center">
+                <a
+                    href="javascript:void(0)" onClick={() => LogoutHandler()}
+                    className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                >
+                    Logout
+                </a>
+            </div>
+            ) : (
                 <div className="mt-3 space-y-2 md:space-x-2 md:flex md:items-center">
                 <a
                     href="#"
