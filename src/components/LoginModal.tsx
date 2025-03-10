@@ -1,6 +1,5 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { useApiPost } from "../functions/FetchAPI";
-import { TApiResponse } from "../types/public.types";
 
 interface IProps {
     setShowLoginModal: Dispatch<SetStateAction<Boolean>>
@@ -9,30 +8,27 @@ interface IProps {
 const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
         const [ username, setuserName ] = useState<string>("");
         const [ password, setPasword ] = useState<string>("");
-        const { data, status, statusText, postAPIData, error } = useApiPost();
+        const { data, postAPIData } = useApiPost();
     
         const ResetForm = (): void => {
             setuserName("");
             setPasword("");
         }
-    
+
         // اگر داخل onSubmit‌ فرم بودیم میشد از event استفاده کرد
         const LoginHandler = async() => {
             console.log(username, password);
             postAPIData("/auth/login", { username, password });
-            console.log("status: ", status)
-            console.log("Text status: ", statusText )
-            console.log("Error: ", error)
-            console.log("Data", data);
-
-            if (status && status !== 200) {
-                alert(data.message)
-            } else {
-                ResetForm();
-            }
-
-            
         }
+
+         //جهت حل مشکل همگام نبودن نمایش دیتاها در کنسول
+        useEffect(() => {
+            if (data) {
+            console.log(data);
+            alert("شما با موفقیت وارد شدید")
+            ResetForm();
+            }
+        }, [data])
 
     return (
         <div className="fixed inset-0 z-10 overflow-y-auto">

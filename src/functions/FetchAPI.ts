@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TPostApiResponse } from "../types/public.types";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const BackEndURL = "http://localhost:3700"
 
@@ -11,30 +12,19 @@ export const useApiPost = (): TPostApiResponse => {
     const [loading, setLoading] = useState<boolean>(false);
 
     // جهت تمیز تر شدن کد موقع کار با useEffect
-    const postAPIData = async (path: string, body: object = {}, options: RequestInit = {}) : Promise<void> => {
+    const postAPIData = async (path: string, body: object = {}, options: AxiosRequestConfig = {}) : Promise<void> => {
         setLoading(true)
         try {
-            const fetchOptions: RequestInit = !options ? {
-                method: "POST",
-                headers: {'content-type': "application/json"},
-                body: JSON.stringify(body),
-                
-            } : {
-                ...options,
-                method: "POST",
-                headers: {'content-type': "application/json"},
-                body: JSON.stringify(body),
-            }
-
             // path مقدار / را داره خود
-            fetch(`${BackEndURL}${path}` , fetchOptions)
-            .then(async (res) => {
-                setStatus(res.status);
-                setStatusText(res.statusText);
-                setData(await res.json())
-            }).catch(err => setError(err))
-        } catch (error) {
-            setError(error);
+            const axiosResponse = await axios.post(`${BackEndURL}${path}`, body, options)
+            setStatusText(axiosResponse.statusText);
+            setData(await axiosResponse.data);
+            setStatus(axiosResponse.status || data.status );
+        } catch (err: AxiosError | any) {
+            setStatus(err?.response?.data?.status || 500);
+            setError(err?.response?.data);
+            console.log(error)
+            return alert(status + " - " + error?.message || err?.message)
         }
         setLoading(false);
     }

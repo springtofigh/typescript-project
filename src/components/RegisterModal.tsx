@@ -1,26 +1,37 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { useApiPost } from "../functions/FetchAPI";
 
 interface IProps {
     setShowRegisterModal: Dispatch<SetStateAction<Boolean>>
 }
 
 const RgisterModal : FC<IProps> = ({ setShowRegisterModal }) => {
-    const [ fullName, setFullName ] = useState<string>("");
+    const [ fullname, setFullname ] = useState<string>("");
     const [ username, setuserName ] = useState<string>("");
     const [ password, setPasword ] = useState<string>("");
+    const { data, postAPIData } = useApiPost();
+
 
     const ResetForm = (): void => {
-        setFullName("");
+        setFullname("");
         setuserName("");
         setPasword("");
     }
 
     // اگر داخل onSubmit‌ فرم بودیم میشد از event استفاده کرد
     const RegisterHandler = () => {
-        console.log(fullName, username, password);
-        ResetForm();
-        setShowRegisterModal(false);
+        postAPIData("/auth/register", { username, password, fullname });
+        // setShowRegisterModal(false);
     }
+
+         //جهت حل مشکل همگام نبودن نمایش دیتاها در کنسول
+         useEffect(() => {
+            if (data) {
+            console.log(data);
+            alert('ثبت نام شما با موفقیت انجام شد');
+            ResetForm();
+            }
+        }, [data])
 
 
     return (
@@ -44,8 +55,8 @@ const RgisterModal : FC<IProps> = ({ setShowRegisterModal }) => {
                                         <div className="mt-4">
                                                 <div className="flex flex-col items-start">
                                                     <input type="text" name="fullname" placeholder="Fullname"
-                                                        value={fullName}
-                                                        onChange={(e) => setFullName(e.target.value)}
+                                                        value={fullname}
+                                                        onChange={(e) => setFullname(e.target.value)}
                                                         className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                                     />
                                                 </div>
@@ -74,7 +85,7 @@ const RgisterModal : FC<IProps> = ({ setShowRegisterModal }) => {
                                                 className="w-full mt-2 p-2.5 flex-1 text-white bg-green-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
                                                 onClick={RegisterHandler}
                                             >
-                                                Login
+                                                Signup
                                             </button>
                                             <button
                                                 className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
