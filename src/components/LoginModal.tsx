@@ -1,5 +1,7 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { useApiPost } from "../functions/FetchAPI";
+import { useCookies } from "react-cookie";
+import { COOKIES_NAME } from "../enums/public.enums";
 
 interface IProps {
     setShowLoginModal: Dispatch<SetStateAction<Boolean>>
@@ -9,6 +11,8 @@ const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
         const [ username, setuserName ] = useState<string>("");
         const [ password, setPasword ] = useState<string>("");
         const { data, postAPIData } = useApiPost();
+        //اسم کوکی یا کوکی هایی که قراره set بشن رو مینویسیم
+        const [cookies, setCookie, removeCookie] = useCookies([COOKIES_NAME.ACCESS_TOKEN, COOKIES_NAME.USER ]);
     
         const ResetForm = (): void => {
             setuserName("");
@@ -24,7 +28,12 @@ const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
          //جهت حل مشکل همگام نبودن نمایش دیتاها در کنسول
         useEffect(() => {
             if (data) {
-            console.log(data);
+            setShowLoginModal(false)
+            const { data: {user} } = data;
+            setCookie(COOKIES_NAME.USER, user)
+            //ذخیره به مدت یک سال
+            setCookie(COOKIES_NAME.ACCESS_TOKEN, user?.accessToken, { expires: new Date(new Date().getTime() + (1000*60*60*24*360)) })
+            console.log(user)
             alert("شما با موفقیت وارد شدید")
             ResetForm();
             }
@@ -93,4 +102,6 @@ const LoginModal : FC<IProps> = ({ setShowLoginModal }) => {
     );
 }
 
-export default LoginModal
+export default LoginModal;
+
+// kheirabadi

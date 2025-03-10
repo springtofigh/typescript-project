@@ -2,10 +2,14 @@ import { JSX, useState } from 'react';
 // import { Link } from 'react-router-dom';
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import { useCookies } from "react-cookie";
+import { COOKIES_NAME } from '../enums/public.enums';
 
 export default function Navbar() {
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [cookies] = useCookies([COOKIES_NAME.ACCESS_TOKEN, COOKIES_NAME.USER ]);
+    
 
     const NAV: JSX.Element = (
         <nav className="w-full bg-purple-500 shadow">
@@ -29,26 +33,28 @@ export default function Navbar() {
                                 Dashboard
                             </li>
                             <li className="text-white hover:text-indigo-200">
-                                Aboutme
+                                About Me
                             </li> 
             </ul>
 
-            <div className="mt-3 space-y-2 md:space-x-2 md:flex md:items-center">
-                                <a
-                                    href="#"
-                                    onClick={() => setShowLoginModal(true)}
-                                    className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-                                >
-                                    Signin
-                                </a>
-                                <a
-                                    href="#"
-                                    onClick={() => setShowRegisterModal(true)}
-                                    className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-                                >
-                                    Signup
-                                </a>
-            </div>
+            {(cookies.accessToken && cookies.user) ? null : (
+                <div className="mt-3 space-y-2 md:space-x-2 md:flex md:items-center">
+                <a
+                    href="#"
+                    onClick={() => setShowLoginModal(true)}
+                    className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                >
+                    Signin
+                </a>
+                <a
+                    href="#"
+                    onClick={() => setShowRegisterModal(true)}
+                    className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                >
+                    Signup
+                </a>
+                </div>
+            )}
         </div>
         </nav>
     )

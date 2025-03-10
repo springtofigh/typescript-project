@@ -31,8 +31,7 @@ function App() {
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
     }
 ]
-      const [blogs, setBlogs] = useState<IBlog[]>(blogsData);
-      
+      const [blogs] = useState<IBlog[]>(blogsData);
   return (
     <div>
       <Navbar/>
