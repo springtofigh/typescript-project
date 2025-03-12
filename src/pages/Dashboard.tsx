@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BlogTables from "../components/BlogTables";
-import { useState } from "react";
 import { IBlog } from '../types/blog.types';
-import { getBlogs } from './../functions/FakeDatas';
+// import { getBlogs } from './../functions/FakeDatas';
+import { useApiGet } from '../functions/FetchAPI';
+import { useCookies } from 'react-cookie';
+import { COOKIES_NAME } from "../enums/public.enums";
 
 function Dashboard() {
-    const [blogs, setBlogs] = useState<IBlog[]>(getBlogs());
+  const {data, getAPIData, status} = useApiGet();
+  const [cookies] = useCookies([COOKIES_NAME.ACCESS_TOKEN])
+  const token = cookies.accessToken
+  const [blogs, setBlogs] = useState<IBlog[]>([]);
+
+  useEffect(() => {
+    getAPIData("/blog", {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    })
+    setBlogs(data?.data?.blogs || [])
+}, [status])
+
   return (
-    <div>
-        <BlogTables blogs={blogs}/>
-    </div>
+    <>
+        {token? <BlogTables blogs={blogs}/>: <h1 className="text-center p-3">unAuthorization</h1>}
+    </>
   )
 }
 
