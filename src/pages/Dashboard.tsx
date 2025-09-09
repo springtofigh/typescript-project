@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import BlogTables from "../components/BlogTables";
 import { IBlog } from '../types/blog.types';
 // import { getBlogs } from './../functions/FakeDatas';
