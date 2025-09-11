@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import BlogTables from "../components/BlogTables";
 import { IBlog } from '../types/blog.types';
-// import { getBlogs } from './../functions/FakeDatas';
+import { getBlogs as getFakeBlogs } from './../functions/FakeDatas';
 import { useApiGet } from '../functions/FetchAPI';
 import { useCookies } from 'react-cookie';
 import { COOKIES_NAME } from "../enums/public.enums";
@@ -20,6 +20,15 @@ function Dashboard() {
     })
     setBlogs(data?.data?.blogs || [])
 }, [status])
+
+  useEffect(() => {
+    if (data?.data?.blogs?.length > 0) {
+      setBlogs(data.data.blogs)
+    } else {
+      // fallback به داده‌های فیک
+      setBlogs(getFakeBlogs())
+    }
+  }, [data])
 
   return (
     <>
