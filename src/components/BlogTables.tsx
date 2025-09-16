@@ -1,9 +1,27 @@
 import { FC } from "react";
 import { IPropsBlogs } from "../types/blog.types";
+import { useApiDelete } from "../functions/FetchAPI";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+import { COOKIES_NAME } from "../enums/public.enums";
 
 type PropsBlogs = Omit<IPropsBlogs, "blog" | "key">
 
  const BlogTableComponents : FC<PropsBlogs> = ({blogs}) => {
+    const [getAPIDelete] = useApiDelete();
+    const navigate = useNavigate();
+    const [cookies] = useCookies([COOKIES_NAME.ACCESS_TOKEN])
+    const token = cookies.accessToken;
+
+        const deleteHandler = (id: string) => {
+            getAPIDelete(`/blog/delete/${id}`, {
+            headers: {      
+            authorization: `Bearer ${token}`
+            }
+        });
+            navigate("/");
+        }
+
     return (
     <div className="flex flex-col mt-5 p-5">
         <div className="overflow-x-auto">
@@ -49,7 +67,7 @@ type PropsBlogs = Omit<IPropsBlogs, "blog" | "key">
                                 blogs.map((blog, index) => (
                                     <tr key={index}>
                                     <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                        {(index + 1)}
+                                        {blog._id}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                                         {blog.title}
@@ -58,13 +76,13 @@ type PropsBlogs = Omit<IPropsBlogs, "blog" | "key">
                                         {blog.author}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                       {blog.text}
+                                        {blog.text}
                                     </td>
                                     <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                         <a
                                             className="text-red-500 hover:text-red-700"
                                             href="#"
-                                            
+                                            onClick={() => deleteHandler(blog._id)}
                                         >
                                             Delete
                                         </a>
