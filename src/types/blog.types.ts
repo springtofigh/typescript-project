@@ -1,4 +1,5 @@
 export interface IBlog {
+    _id: string;
     title: string;
     img: string;
     text: string;
