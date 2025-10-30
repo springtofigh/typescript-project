@@ -4,7 +4,7 @@ import { PropsBlog } from "../types/blog.types";
 
 const BlogCard : FC<PropsBlog> = ({blog}) => {
     return (
-        <div className="relative flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+        <div className="relative flex w-80 flex-col rounded-xl mb-8 bg-white bg-clip-border text-gray-700 shadow-md">
         <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
         <img src={blog.img} alt={blog.title} />
         </div>
