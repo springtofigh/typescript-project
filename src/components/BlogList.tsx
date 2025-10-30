@@ -9,7 +9,7 @@ const BlogList : FC<PropsBlogs> = ({blogs}) => {
     ))
 
     return (
-        <div className="grid gap-2 lg:grid-cols-4 p-5">
+        <div className="grid gap-2 mt-6 lg:grid-cols-4 p-5 justify-items-center">
             {Cards}
         </div>
     )
