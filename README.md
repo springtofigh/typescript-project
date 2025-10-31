@@ -74,7 +74,7 @@ npm run dev
 Then open http://localhost:5173
 in your browser 🚀
 
-##🧠 Learning Outcomes
+## 🧠 Learning Outcomes
 
 Through this project, I practiced:
 
